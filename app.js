@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
+const projectRoutes = require('./routes/ProjectRoutes');
 
 const app = express();
 
@@ -18,9 +19,10 @@ app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true,
 }));
-app.use(express.json()); // Middleware to parse JSON bodies
+app.use(express.json()); 
 
 app.use('/api/auth', authRoutes);
+app.use('/api/projects', projectRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

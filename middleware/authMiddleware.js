@@ -1,25 +1,29 @@
 const jwt = require('jsonwebtoken');
+const config = require('../config/config'); // Adjust path as necessary
 
-// Middleware to verify JWT token
-const authMiddleware = (req, res, next) => {
-  // Get token from header
-  const token = req.header('Authorization');
-
-  // Check if token exists
-  if (!token) {
-    return res.status(401).json({ message: 'Authorization denied. Token not provided.' });
+function authMiddleware(req, res, next) {
+  // Get token from request header
+  const authHeader = req.header('Authorization');
+  
+  if (!authHeader) {
+    return res.status(401).json({ message: 'Authorization denied. No token provided.' });
   }
+
+  // Remove Bearer prefix if present
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7, authHeader.length).trimLeft() : authHeader;
 
   try {
     // Verify token
-    const decoded = jwt.verify(token, 'your-secret-key');
+    const decoded = jwt.verify(token, config.jwtSecret);
 
-    // Attach user from token payload to request object
-    req.user = decoded.user;
-    next();
+    // Set user in request object
+    req.user = decoded.user; // Assuming decoded.user contains user information
+
+    next(); // Move to the next middleware or route handler
   } catch (err) {
+    console.error('Token verification error:', err);
     res.status(401).json({ message: 'Authorization denied. Invalid token.' });
   }
-};
+}
 
 module.exports = authMiddleware;
