@@ -27,7 +27,8 @@ const createUser = async (req, res) => {
     user = new User({
       username,
       email,
-      password
+      password,
+      role
     });
 
     // Save user to database
@@ -61,7 +62,7 @@ const getUserById = async (req, res) => {
 // Update user by ID
 const updateUser = async (req, res) => {
   const { id } = req.params;
-  const { username, email } = req.body;
+  const { username, email , role} = req.body;
 
   try {
     let user = await User.findById(id);
@@ -72,6 +73,7 @@ const updateUser = async (req, res) => {
 
     user.username = username;
     user.email = email;
+    user.role = role;
 
     await user.save();
 
@@ -81,6 +83,7 @@ const updateUser = async (req, res) => {
     res.status(500).send('Server Error');
   }
 };
+
 
 // Delete user by ID
 const deleteUser = async (req, res) => {
