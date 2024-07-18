@@ -16,12 +16,6 @@ const projectSchema = new Schema({
       endDate: {
         type: Date,
         required: true
-      },
-
-      owner: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
       }
 });
 

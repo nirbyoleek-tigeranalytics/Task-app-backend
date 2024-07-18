@@ -7,7 +7,7 @@ const UserController = require('../controllers/userController');
 router.post('/', UserController.createUser);
 
 // GET /api/users (Get all users)
-router.get('/', authMiddleware, UserController.getAllUsers);
+router.get('/', authMiddleware, UserController.getUsers);
 
 // GET /api/users/:id (Get user by ID)
 router.get('/:id', authMiddleware, UserController.getUserById);

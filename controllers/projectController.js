@@ -10,7 +10,6 @@ const createProject = async (req, res) => {
       description,
       startDate,
       endDate,
-      owner: req.user.id 
     });
 
     const project = await newProject.save();
@@ -21,52 +20,57 @@ const createProject = async (req, res) => {
   }
 };
 
+// Fetch all projects
 const getProjects = async (req, res) => {
-    try{
-        const projects = await Project.find({owner :req.user.id})
-        res.json(projects)
-    }catch(err){
-        res.status(500).send("Server error");
-    }};
+  try {
+    const projects = await Project.find();
+    res.json(projects);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
 
-const updateProject = async(req,res)=>{
-    const {id}  = req.params;
-    const {name,description,startDate,endDate,owner} = req.body
-    try{
-      const project = await Project.findByIdAndUpdate(
-        id,
-        {name,description,startDate,endDate,owner:req.user.id},
-        {new :true,runValidators:true}
+// Update project by ID
+const updateProject = async (req, res) => {
+  const { id } = req.params;
+  const { name, description, startDate, endDate } = req.body;
+
+  try {
+    const project = await Project.findByIdAndUpdate(
+      id,
+      { name, description, startDate, endDate },
+      { new: true, runValidators: true }
     );
+
     if (!project) {
-        return res.status(404).json({ message: 'Project not found' });
-      }
-  
-      res.json(project);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
+      return res.status(404).json({ message: 'Project not found' });
     }
-    };
 
-    const deleteProject = async (req, res) => {
-        const { id } = req.params;
-      
-        try {
-          // Find the project by ID and delete it
-          const project = await Project.findByIdAndDelete(id);
-      
-          if (!project) {
-            return res.status(404).json({ message: 'Project not found' });
-          }
-      
-          res.json({ message: 'Project deleted' });
-        } catch (err) {
-          console.error(err.message);
-          res.status(500).send('Server Error');
-        }
-      };
+    res.json(project);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
 
+// Delete project by ID
+const deleteProject = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const project = await Project.findByIdAndDelete(id);
+
+    if (!project) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+
+    res.json({ message: 'Project deleted' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
 
 module.exports = {
   createProject,

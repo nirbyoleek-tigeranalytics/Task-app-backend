@@ -2,7 +2,7 @@ const Task = require('../models/taskModel');
 
 // Create a new task
 const createTask = async (req, res) => {
-  const { name,description, dueDate, status, project } = req.body;
+  const { name,description, dueDate, status, project ,owner} = req.body;
 
   try {
     const newTask = new Task({
@@ -10,7 +10,7 @@ const createTask = async (req, res) => {
       description,
       dueDate,
       status,
-      owner: req.user.id, 
+      owner, 
       project,
     });
 
@@ -25,12 +25,12 @@ const createTask = async (req, res) => {
 // Update a task
 const updateTask = async (req, res) => {
   const { id } = req.params;
-  const { description, dueDate, status, project } = req.body;
+  const { name,description, dueDate,owner, status, project } = req.body;
 
   try {
     const task = await Task.findByIdAndUpdate(
       id,
-      { description, dueDate, status, project },
+      {name, description, dueDate, status,owner, project },
       { new: true, runValidators: true }
     );
 
@@ -65,7 +65,7 @@ const deleteTask = async (req, res) => {
 
 const getUserTasks = async (req, res) => {
     try {
-      const tasks = await Task.find({ owner: req.user.id }).populate('owner', 'username email').populate('project', 'name');
+      const tasks = await Task.find().populate('owner', 'username email').populate('project', 'name');
       res.json(tasks);
     } catch (err) {
       console.error(err.message);

@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Create a new project
 router.post('/', authMiddleware, createProject);
-router.post('/:id', authMiddleware, updateProject);
+router.put('/:id', authMiddleware, updateProject);
 router.get('/', authMiddleware, getProjects);
 router.delete('/:id', authMiddleware, deleteProject);``
 
