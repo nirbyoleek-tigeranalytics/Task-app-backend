@@ -31,7 +31,8 @@ const register = async (req, res) => {
     // Create and return JWT token
     const payload = {
       user: {
-        id: user.id
+        id: user.id,
+        role: user.role // Include role in payload
       }
     };
 
@@ -41,7 +42,7 @@ const register = async (req, res) => {
       { expiresIn: '1h' },
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        res.json({ token, role: user.role }); // Return role with token
       }
     );
   } catch (err) {
@@ -70,7 +71,8 @@ const login = async (req, res) => {
     // Create and return JWT token
     const payload = {
       user: {
-        id: user.id
+        id: user.id,
+        role: user.role // Include role in payload
       }
     };
 
@@ -80,7 +82,7 @@ const login = async (req, res) => {
       { expiresIn: '1h' },
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        res.json({ token, role: user.role }); // Return role with token
       }
     );
   } catch (err) {
