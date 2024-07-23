@@ -79,7 +79,7 @@ const login = async (req, res) => {
     jwt.sign(
       payload,
       config.jwtSecret,
-      { expiresIn: '1h' },
+      { expiresIn: '5h' },
       (err, token) => {
         if (err) throw err;
         res.json({ token, role: user.role }); // Return role with token
