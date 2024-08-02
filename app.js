@@ -18,9 +18,11 @@ mongoose.connect(mongoURI, {
 .catch(err => console.error('MongoDB connection error:', err));
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+   origin: 'http://ec2-13-201-187-156.ap-south-1.compute.amazonaws.com',
   credentials: true,
 }));
+
+  
 app.use(express.json()); 
 
 app.use('/api/auth', authRoutes);
